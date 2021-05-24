@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block body %}
+<style>
+  label {
+    padding: 4px 6px;
+    line-height: 190%;
+    outline-style: none;
+    transition: all .6s;
+    font-size: 20px
+  }
+
+  .hiddenCB div {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .hiddenCB input[type="checkbox"],
+  .hiddenCB input[type="radio"] {
+    display: none;
+
+  }
+
+  .hiddenCB label {
+
+    cursor: pointer;
+  }
+
+  .hiddenCB input[type="checkbox"]+label:hover {
+    background: rgba(0, 128, 128, .8);
+  }
+
+  .hiddenCB input[type="checkbox"]:checked+label {
+    background: rgba(0, 128, 128, .4);
+  }
+
+  .hiddenCB input[type="checkbox"]:checked+label:hover {
+    background: rgba(0, 128, 128, 0, .7);
+  }
+</style>
+<section class="text-gray-600 body-font">
+  <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center pl-14 ">
+    <div
+      class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
+      <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Filter out the Attributes</h1>
+
+      <br>
+      <form method="post" action="{{url_for('filter_attr')}}">
+        <div class="hiddenCB">
+
+          <h1><b>Categorical Attributes</b></h1>
+          <div>
+            {% for attribute in context['attr'] %}
+            <input type="checkbox" name="choice1" id="{{loop.index}}" value="{{attribute}}" /><label
+              for="{{loop.index}}">{{attribute}}</label>
+            {% endfor %}
+          </div>
+          <br><br><br>
+
+          <h1><b>Target Variable</b></h1>
+          <div>
+            {% for attribute in context['attr'] %}
+            <input type="checkbox" name="choice2" id="{{loop.index+17}}" value="{{attribute}}" /><label
+              for="{{loop.index+17}}">{{attribute}}</label>
+            {% endfor %}
+          </div>
+          <br><br><br>
+          <h1><b>Numeric Variables</b></h1>
+          <div>
+            {% for attribute in context['attr'] %}
+            <input type="checkbox" name="choice3" id="{{loop.index+34}}" value="{{attribute}}" /><label
+              for="{{loop.index+34}}">{{attribute}}</label>
+            {% endfor %}
+          </div>
+
+          <br><br><br>
+          <h1><b>Unwanted Variables</b></h1>
+          <div>
+            {% for attribute in context['attr'] %}
+            <input type="checkbox" name="choice4" id="{{loop.index+51}}" value="{{attribute}}" /><label
+              for="{{loop.index+51}}">{{attribute}}</label>
+            {% endfor %}
+          </div>
+          <br><br>
+          <button type="submit"
+            class="text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg">Filter</button>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+{% endblock body %}

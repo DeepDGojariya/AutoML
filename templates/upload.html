@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block body %}
+<style>
+  tr:nth-child(even) {
+    background: #F8F8F8;
+  }
+
+  .previous {
+
+    color: white;
+  }
+
+  .next {
+
+    color: white;
+  }
+
+  .btn {
+    background-color: #059669;
+    /* Green */
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 15px;
+  }
+</style>
+<section class="text-gray-600 body-font">
+  <div class="container px-5 py-24 mx-auto">
+    <div class="flex flex-col text-center w-full mb-12">
+      {% if context %}
+      <h1 style="display:inline" class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
+        {{context['filename']}}</h1>
+      <div>
+        <button class="btn"><a href="#" class="previous">&laquo; Re-Upload</a></button>
+        <button class="btn"><a href="{{url_for('filter_attr')}}" class="next">Filter The Attributes &raquo;</a>
+      </div></button>
+      <br>
+      <table
+        style="font-family:Verdana; border-radius: 5px;font-size: 12px;font-weight: normal;border: none;border-collapse: collapse;width: 100%;max-width: 100%;white-space: nowrap;background-color: white;">
+        <tr>
+          {% for attribute in context['attr'] %}
+          <th style="text-align:center;padding:8px;background-color:#324960;color:white">{{attribute}}</th>
+          {% endfor %}
+        </tr>
+        {% for sub_lst in context['lst'] %}
+        <tr style="nth-child(even)">
+          {% for val in sub_lst %}
+          <td style="text-align:center;padding:8px">{{val}}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </table>
+      {% else %}
+      <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Upload A Dataset</h1>
+      <p class="lg:w-2/3 mx-auto my-2 leading-relaxed text-base">Make sure that you only upload .csv files and size
+        should not be greater than 5 MB.</p>
+
+    </div><br>
+    <div
+      class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+
+      <div style="margin: 0;position: absolute;left: 50%;-ms-transform: translate(-50%);transform: translate(-50%);">
+        <form action="{{url_for('upload')}}" enctype="multipart/form-data" method="post">
+          <input type="file" name="userfile"></input>
+          <button type="submit"
+            class="text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg">Upload</button>
+        </form>
+      </div>
+
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+
+{% endblock body %}

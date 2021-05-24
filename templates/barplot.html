@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<style>
+    .box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .box select {
+        background-color: #059468;
+        color: white;
+        padding: 12px;
+        width: 250px;
+        border: none;
+        font-size: 20px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+        -webkit-appearance: button;
+        appearance: button;
+        outline: none;
+    }
+
+    .box::before {
+
+        font-family: FontAwesome;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 20%;
+        height: 100%;
+        text-align: center;
+        font-size: 28px;
+        line-height: 45px;
+        color: rgba(255, 255, 255, 0.5);
+        background-color: rgba(255, 255, 255, 0.1);
+        pointer-events: none;
+    }
+
+    .box:hover::before {
+        color: rgba(255, 255, 255, 0.6);
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .box select option {
+        padding: 5px;
+    }
+</style>
+<section class="text-gray-600 body-font">
+    <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center pl-14 ">
+        <div
+            class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
+            <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Data-Viz | Barplot</h1>
+            {% if context['id']==1 %}
+            <section class="text-gray-600 body-font">
+                <div class="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
+                    <img class="lg:w-4/6 md:w-4/6 w-5/6 mb-10 ml-15 object-cover object-center rounded" alt="hero"
+                        src="{{url_for('static',filename=context['file'])}}">
+
+                    <div class="text-center lg:w-2/3 w-full">
+                        <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">{{context['attr2']}}
+                            v/s {{context['attr1']}}
+                        </h1>
+                        <!--Extra Info-->
+
+                    </div>
+                </div>
+            </section>
+
+            {% endif %}
+            {% if context['id']==2 %}
+            <p class="mb-8 leading-relaxed">Choose the Attributes for creating a Barplot.</p>
+            <br><br>
+            <div class="flex w-full md:justify-start justify-center items-end">
+                <div class="relative mr-4 md:w-full lg:w-full xl:w-1/2 w-2/4">
+                    <br><br>
+
+                    <form method="POST" action={{url_for('barplot_vis')}}>
+                        <div class="box">
+                            <select name="attribute1" id="attr1">
+                                {% for attr in context['cat_attr'] %}
+                                <option value="{{attr}}" id="hero-field"
+                                    class="w-full bg-gray-100 rounded border bg-opacity-50 border-gray-300 focus:ring-2 focus:ring-green-200 focus:bg-transparent focus:border-green-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                    {{attr}}</option>
+                                {% endfor %}
+                            </select>
+                            <br><br>
+                            <select name="attribute2" id="attr2">
+                                {% for attr in context['num_attr'] %}
+                                <option value="{{attr}}" id="hero-field"
+                                    class="w-full bg-gray-100 rounded border bg-opacity-50 border-gray-300 focus:ring-2 focus:ring-green-200 focus:bg-transparent focus:border-green-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                    {{attr}}</option>
+                                {% endfor %}
+                            </select>
+                            <br><br>
+                            <button type="submit"
+                                class="inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg">Visualize</button>
+                        </div>
+
+                    </form>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+    {% endif %}
+</section>
+
+
+{% endblock body %}

@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block body %}
+<style>
+  [type="radio"]:checked,
+  [type="radio"]:not(:checked) {
+    position: absolute;
+    left: -9999px;
+    overflow: hidden;
+    z-index: -5
+  }
+
+  [type="radio"]:checked+label,
+  [type="radio"]:not(:checked)+label {
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    line-height: 20px;
+    display: inline-block;
+    color: #666;
+  }
+
+  [type="radio"]:checked+label:before,
+  [type="radio"]:not(:checked)+label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #ddd;
+    border-radius: 100%;
+    background: #fff;
+
+  }
+
+  [type="radio"]:checked+label:after,
+  [type="radio"]:not(:checked)+label:after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: #10B963;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    border-radius: 100%;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+  }
+
+  [type="radio"]:not(:checked)+label:after {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+
+  [type="radio"]:checked+label:after {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+</style>
+
+<section class="text-gray-600 body-font">
+  <div class="container px-5 py-24 mx-auto">
+    <div class="flex flex-wrap w-full">
+      <div class="lg:w-1/2 w-full mb-6 lg:mb-0">
+        <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Encoding Categorical Variables</h1>
+        <div class="h-1 w-20 bg-green-500 rounded"></div>
+      </div>
+    </div>
+
+    <br><br>
+    <p>Choose any one of the encoding techniques for your Categorical Variables.</p>
+    <br>
+    <form method='post' ,action={{url_for('encode_pre')}}>
+      <p>
+        <input type="radio" id="enc1" name="enc" value="label">
+        <label for="enc1">Label Encoding</label>
+      </p>
+      <br>
+      <p>
+        <input type="radio" id="enc2" name="enc" value="onehot">
+        <label for="enc2">One Hot Encoding</label>
+      </p>
+      <br>
+      <button
+        class="inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg">Submit</button>
+    </form>
+</section>
+
+
+
+
+
+
+{% endblock body%}

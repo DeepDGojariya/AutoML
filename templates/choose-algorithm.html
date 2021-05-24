@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<style>
+    [type="radio"]:checked,
+    [type="radio"]:not(:checked) {
+        position: absolute;
+        left: -9999px;
+        overflow: hidden;
+        z-index: -5
+    }
+
+    [type="radio"]:checked+label,
+    [type="radio"]:not(:checked)+label {
+        position: relative;
+        padding-left: 28px;
+        cursor: pointer;
+        line-height: 20px;
+        display: inline-block;
+        color: #666;
+    }
+
+    [type="radio"]:checked+label:before,
+    [type="radio"]:not(:checked)+label:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 18px;
+        height: 18px;
+        border: 1px solid #ddd;
+        border-radius: 100%;
+        background: #fff;
+
+    }
+
+    [type="radio"]:checked+label:after,
+    [type="radio"]:not(:checked)+label:after {
+        content: '';
+        width: 12px;
+        height: 12px;
+        background: #10B963;
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        border-radius: 100%;
+        -webkit-transition: all 0.2s ease;
+        transition: all 0.2s ease;
+    }
+
+    [type="radio"]:not(:checked)+label:after {
+        opacity: 0;
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+
+    [type="radio"]:checked+label:after {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+
+    .box {
+        position: absolute;
+        top: 50%;
+        left: 12%;
+        transform: translate(-50%, -50%);
+    }
+
+    .box select {
+        background-color: #059468;
+        color: white;
+        padding: 12px;
+        width: 250px;
+        border: none;
+        font-size: 20px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+        -webkit-appearance: button;
+        appearance: button;
+        outline: none;
+    }
+
+    .box::before {
+
+        font-family: FontAwesome;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 20%;
+        height: 100%;
+        text-align: center;
+        font-size: 28px;
+        line-height: 45px;
+        color: rgba(255, 255, 255, 0.5);
+        background-color: rgba(255, 255, 255, 0.1);
+        pointer-events: none;
+    }
+
+    .box:hover::before {
+        color: rgba(255, 255, 255, 0.6);
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .box select option {
+        padding: 5px;
+    }
+
+    .slidecontainer {
+        width: 100%;
+    }
+
+    .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 25px;
+        background: white;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+        border-radius: 10px;
+    }
+
+    .slider:hover {
+        opacity: 1;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        background: #04AA6D;
+        cursor: pointer;
+        border-radius: 10px
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        background: #04AA6D;
+        cursor: pointer;
+    }
+</style>
+
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-24 mx-auto">
+        <div class="flex flex-wrap w-full">
+            <div class="lg:w-1/2 w-full mb-6 lg:mb-0">
+                <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Choose your problem type.
+                </h1>
+                <div class="h-1 w-20 bg-green-500 rounded"></div>
+            </div>
+        </div>
+
+        <br><br>
+        <p>Select either Regression or Classification(based on your problem statement.)</p>
+        <br>
+
+        <form method='post' ,action={{url_for('choose_algorithm')}}>
+            <div class="box">
+                <p style="padding-bottom:15px">
+                    <input type="radio" id="re" name="type" value="reg"
+                        onclick="ShowHideDiv1('re','algo1','txt1','algo2')">
+                    <label id="txt1" for="re">Regression</label>
+                </p>
+
+
+                <select name="ch1" id="algo1" style="display:none">
+                    <option value="lr">Linear Regression</option>
+                    <option value="pr">Polynomial Regression</option>
+                    <option value="dtr">Decision Tree</option>
+                    <option value="rfr">Random Forest</option>
+                </select>
+
+
+
+                <p style="padding-top:15px;padding-bottom:5px">
+                    <input type="radio" id="cl" name="type" value="class"
+                        onclick="ShowHideDiv1('cl','algo2','txt2','algo1')">
+                    <label id="txt2" for="cl">Classification</label>
+                </p>
+
+
+                <select name="ch2" id="algo2" style="display:none" style="padding-bottom:15px">
+                    <option value="logr">Logistic Regression</option>
+                    <option value="dtc">Decision Tree</option>
+                    <option value="rfc">Random Forest</option>
+                </select>
+
+                <p style="padding-top:15px">Test Size</p>
+
+                <input type="range" min="0.05" max="0.5" value="0.25" class="slider" id="myRange" step="0.05" name="ts">
+                <p style="padding-bottom:15px">Value: <span id="demo"></span></p>
+
+                <button
+                    class="inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg">Train
+                    Model</button>
+            </div>
+        </form>
+
+</section>
+<script type="text/javascript">
+    function ShowHideDiv1(id, id2, id3, id4) {
+        var chkYes = document.getElementById(id);
+        var dvPassport = document.getElementById(id2);
+        var dvPassport2 = document.getElementById(id4);
+        var txt = document.getElementById(id3).innerHTML;
+        console.log(txt);
+        if (txt == 'Regression') {
+            dvPassport.style.display = chkYes.checked ? "block" : "none";
+            dvPassport2.style.display = chkYes.checked ? "none" : "block";
+            document.getElementById(id2).value = ''
+        }
+
+        if (txt == 'Classification') {
+            dvPassport.style.display = chkYes.checked ? "block" : "none";
+            dvPassport2.style.display = chkYes.checked ? "none" : "block";
+            document.getElementById(id2).value = ''
+        }
+
+
+    }
+
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("demo");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function () {
+        output.innerHTML = this.value;
+    }
+</script>
+
+{% endblock body %}

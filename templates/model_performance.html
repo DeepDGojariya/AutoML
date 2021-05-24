@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% block body %}
+<style>
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    overflow: hidden;
+
+    td,
+    th {
+      border-top: 1px solid #ECF0F1;
+
+    }
+
+    td {
+      border-left: 1px solid #ECF0F1;
+      border-right: 1px solid #ECF0F1;
+    }
+
+    th {
+      background-color: #4ECDC4;
+    }
+
+    tr:nth-of-type(even) td {
+      background-color: lighten(#4ECDC4, 35%);
+    }
+</style>
+<section class="text-gray-600 body-font">
+  <div class="container px-5 py-24 mx-auto">
+    <div class="flex flex-wrap w-full">
+      <div class="lg:w-1/2 w-full mb-6 lg:mb-0">
+        <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Model Performance and Results</h1>
+        <div class="h-1 w-20 bg-green-500 rounded"></div>
+      </div>
+    </div>
+    {% if context['flag']=='c' %}
+    <section class="text-gray-600 body-font">
+      <div class="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
+        <img class="lg:w-4/6 md:w-4/6 w-5/6 mb-10 object-cover object-center rounded" alt="hero"
+          src="{{url_for('static',filename=context['lst'][0])}}">
+        <div class="text-center lg:w-2/3 w-full">
+          <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Confusion Matrix</h1>
+        </div>
+
+        <div class="container mx-auto flex px-5 py-24 items-center justify-right flex-col">
+          <div class="text-center lg:w-2/3 w-full">
+            <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Classification Metrics</h1>
+            <table>
+              <thead>
+                <tr class="table-headers">
+                  <th>Metric</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Precision</td>
+                  <td>{{context['lst'][1]}}</td>
+                </tr>
+                <tr>
+                  <td>Recall</td>
+                  <td>{{context['lst'][2]}}</td>
+                </tr>
+                <tr>
+                  <td>F1-score</td>
+                  <td>{{context['lst'][3]}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="text-center lg:w-2/3 w-full">
+            <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Download Model</h1>
+            <button
+              class="inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg"><a
+                href="{{url_for('download')}}">Download</a></button>
+          </div>
+    </section>
+    {% endif %}
+    {% if context['flag']=='r' %}
+    <section class="text-gray-600 body-font">
+      <div class="container mx-auto flex px-5 py-24 items-center justify-right flex-col">
+        <div class="text-center lg:w-2/3 w-full">
+          <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Regression Metrics</h1>
+          <table>
+            <thead>
+              <tr class="table-headers">
+                <th>Metric</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>R2-Score</td>
+                <td>{{context['lst'][0]}}</td>
+              </tr>
+              <tr>
+                <td>Mean Absolute Error</td>
+                <td>{{context['lst'][1]}}</td>
+              </tr>
+              <tr>
+                <td>Mean Squared Error</td>
+                <td>{{context['lst'][2]}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="text-center lg:w-2/3 w-full">
+          <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Download Model</h1>
+          <button
+            class="inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg"><a
+              href="{{url_for('download')}}">Download</a></button>
+        </div>
+    </section>
+
+
+
+
+
+    {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {% endblock body %}

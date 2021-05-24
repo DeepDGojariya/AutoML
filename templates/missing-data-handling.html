@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% block body %}
+<style>
+  [type="radio"]:checked,
+  [type="radio"]:not(:checked) {
+    position: absolute;
+    left: -9999px;
+    overflow: hidden;
+    z-index: -5
+  }
+
+  [type="radio"]:checked+label,
+  [type="radio"]:not(:checked)+label {
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    line-height: 20px;
+    display: inline-block;
+    color: #666;
+  }
+
+  [type="radio"]:checked+label:before,
+  [type="radio"]:not(:checked)+label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #ddd;
+    border-radius: 100%;
+    background: #fff;
+
+  }
+
+  [type="radio"]:checked+label:after,
+  [type="radio"]:not(:checked)+label:after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: #10B963;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    border-radius: 100%;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+  }
+
+  [type="radio"]:not(:checked)+label:after {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+
+  [type="radio"]:checked+label:after {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+</style>
+<section class="text-gray-600 body-font">
+  <div class="container px-5 py-24 mx-auto">
+    <div class="flex flex-wrap w-full">
+      <div class="lg:w-1/2 w-full mb-6 lg:mb-0">
+        <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Missing Data Handling</h1>
+        <div class="h-1 w-20 bg-green-500 rounded"></div>
+      </div>
+    </div>
+    {% if context['id']==4 %}
+    <br><br>
+    <p>Data Submitted Successfully.</p>
+    <br>
+    <br>
+    <form method='post' action="{{url_for('update_csv')}}">
+      <button
+        class="inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg"
+        type="submit">Back To Preprocessing</button>
+    </form>
+    {% endif %}
+    {% if context['id']==1 %}
+    <section class="text-gray-600 body-font">
+      <div class="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
+        <img class="lg:w-4/6 md:w-4/6 w-5/6 mb-10 object-cover object-center rounded" alt="hero"
+          src="{{url_for('static',filename=context['file'])}}">
+        <div class="text-center lg:w-2/3 w-full">
+          <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Missing Data Matrix</h1>
+          <p class="mb-8 leading-relaxed">The horizontal white patches represents the missing data in each of the
+            different attributes.</p>
+        </div>
+        <form method="post" action="{{url_for('missing_pre')}}">
+          <button
+            class="inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg">Next</button>
+        </form>
+      </div>
+    </section>
+    {% endif %}
+    {% if context['id']==2 %}
+    <div class="container mx-auto flex px-5 py-1 flex-col center">
+
+      <h1><b>Select for each attribute how you want to handle missing data in it.</b></h1>
+      <br>
+      <!--Form form form-->
+
+      <form method="post" action="{{url_for('missing_pre')}}">
+
+        <h2><b><u>Attribute: {{context['num_miss']}} | Numeric</u></b></h2>
+        <br>
+        <p>
+          <input type="radio" id="op1" name="rg" onclick="ShowHideDiv('op1','constdiv','l1')">
+          <label id="l1" for="op1">Global Constant</label>
+        </p>
+        <br>
+        <div id="constdiv" style="display: none;padding-bottom:20px">
+          Enter constant value:
+          <input type="text" id="global" name="constant" style="padding:3px" />
+          <br>
+        </div>
+
+        <p>
+          <input type="radio" id="op2" name="rg" value="Mean" onclick="ShowHideDiv('op2','constdiv','l2')">
+          <label id="l2" for="op2">Mean</label>
+        </p>
+        <br>
+        <p>
+          <input type="radio" id="op3" name="rg" value="Median" onclick="ShowHideDiv('op3','constdiv','l3')">
+          <label id="l3" for="op3">Median</label>
+        </p>
+        <br>
+        <p>
+          <input type="radio" id="op4" name="rg" value="DR" onclick="ShowHideDiv('op4','constdiv','l4')">
+          <label id="l4" for="op4">Drop Records</label>
+        </p>
+        <br>
+        <p>
+          <input type="radio" id="op5" name="rg" value="DC" onclick="ShowHideDiv('op5','constdiv','l5')">
+          <label id="l5" for="op5">Drop Column</label>
+        </p>
+        <br>
+        <button type="submit"
+          class="inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg">Next</button>
+      </form>
+
+
+
+    </div>
+    {% endif %}
+    {% if context['id']==3 %}
+    <div class="container mx-auto flex px-5 py-1 flex-col center">
+
+      <h1><b>Select for each attribute how you want to handle missing data in it.</b></h1>
+      <br>
+      <form method="post" action="{{url_for('missing_pre')}}">
+        <h2><b><u>Attribute: {{context['cat_miss']}} | Categorical</u></b></h2>
+        <br>
+
+        <p>
+          <input type="radio" id="op5" name="rg0" value="Mode">
+          <label id="l5" for="op5">Mode</label>
+        </p>
+        <br>
+
+        <p>
+          <input type="radio" id="op6" name="rg0" value="DR">
+          <label id="l6" for="op6">Drop Records</label>
+        </p>
+        <br>
+        <p>
+          <input type="radio" id="op7" name="rg0" value="DC">
+          <label id="l7" for="op7">Drop Column</label>
+        </p>
+        <br>
+        <button type="submit"
+          class="inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg">Next</button>
+
+      </form>
+    </div>
+
+
+
+
+    {% endif %}
+    <script type="text/javascript">
+      function ShowHideDiv(id, id2, id3) {
+        var chkYes = document.getElementById(id);
+        var dvPassport = document.getElementById(id2);
+        var txt = document.getElementById(id3).innerHTML;
+        console.log(txt);
+        if (txt == 'Global Constant') {
+          dvPassport.style.display = chkYes.checked ? "block" : "none";
+        }
+        else {
+          dvPassport.style.display = chkYes.checked ? "none" : "block";
+        }
+      }
+    </script>
+
+
+    {% endblock body%}
